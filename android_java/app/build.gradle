@@ -43,6 +43,17 @@ dependencies {
 	implementation 'androidx.appcompat:appcompat:1.4.2'
 	implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
+	// fusedLocation
+	implementation 'com.google.android.gms:play-services-location:20.0.0'
+
+	/* androidx.recyclerview */
+	implementation "androidx.recyclerview:recyclerview:1.2.1"
+	// For control over item selection of both touch and mouse driven selection
+	implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
+
+	/* androidx.cardview */
+	implementation "androidx.cardview:cardview:1.0.0"
+
 	/* androidx.lifecycle */
 	def lifecycle_version = "2.4.1"
 	def arch_version = "2.1.0"
