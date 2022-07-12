@@ -3,6 +3,7 @@ package tree.study.branch_act;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import tree.study.base.BaseActivity;
@@ -20,18 +21,22 @@ public class ArchitectureActivity extends BaseActivity {
 		bind = ActivityArchitectureBinding.inflate(getLayoutInflater());
 		setContentView(bind.getRoot());
 
-		bind.show.setText(vm.count.getValue() + "");
 		bind.plus.setOnClickListener(this::click_plus);
 		bind.minus.setOnClickListener(this::click_minus);
+
+		vm.count.observe(this, new Observer<Integer>() {
+			@Override
+			public void onChanged(Integer integer) {
+				bind.show.setText(integer + "");
+			}
+		});
 	}
 
 	private void click_plus(View view) {
 		vm.increase();
-		bind.show.setText(vm.count.getValue() + "");
 	}
 
 	private void click_minus(View view) {
 		vm.decrease();
-		bind.show.setText(vm.count.getValue() + "");
 	}
 }
