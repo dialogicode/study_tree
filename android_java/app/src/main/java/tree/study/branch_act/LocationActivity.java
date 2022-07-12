@@ -2,6 +2,8 @@ package tree.study.branch_act;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -15,6 +17,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
+
+import java.util.List;
 
 import tree.study.base.BaseActivity;
 import tree.study.branch_vm.LocationViewModel;
@@ -34,8 +38,8 @@ public class LocationActivity extends BaseActivity {
 		bind = ActivityLocationBinding.inflate(getLayoutInflater());
 		setContentView(bind.getRoot());
 
-		vm.getLatitude().observe(this, doubleV -> bind.latitude.setText(doubleV + ""));
-		vm.getLongitude().observe(this, doubleV -> bind.longitude.setText(doubleV + ""));
+		vm.getLatitude().observe(this, doubleV -> bind.latitude.setText(get_position_dms(doubleV)));
+		vm.getLongitude().observe(this, doubleV -> bind.longitude.setText(get_position_dms(doubleV)));
 		vm.getAltitude().observe(this, doubleV -> bind.altitude.setText(doubleV + ""));
 		vm.getAccuracy().observe(this, floatV -> bind.accuracy.setText(floatV + ""));
 		vm.getSpeed().observe(this, floatV -> bind.speed.setText(floatV + ""));
@@ -75,7 +79,10 @@ public class LocationActivity extends BaseActivity {
 			request_permission(perm_tool.get_not_granted_permission(perm_tool.get_fore_location_permissions()));
 			return;
 		}
-		client.getLastLocation().addOnSuccessListener(this, location -> vm.setLocation(location));
+		client.getLastLocation().addOnSuccessListener(this, location -> {
+			vm.setLocation(location);
+			set_address(location.getLatitude(), location.getLongitude());
+		});
 	}
 
 	private LocationRequest get_location_request() {
@@ -93,7 +100,10 @@ public class LocationActivity extends BaseActivity {
 			@Override
 			public void onLocationResult(@NonNull LocationResult locationResult) {
 				Location location = locationResult.getLastLocation();
-				if (location != null) vm.setLocation(location);
+				if (location != null) {
+					vm.setLocation(location);
+					set_address(location.getLatitude(), location.getLongitude());
+				}
 			}
 		};
 	}
@@ -109,5 +119,24 @@ public class LocationActivity extends BaseActivity {
 
 	private void stop_location_updates() {
 		client.removeLocationUpdates(callback);
+	}
+
+	private void set_address(double lat, double lng) {
+		Geocoder geocoder = new Geocoder(this);
+
+		try {
+			List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+			vm.getAddress().setValue(addresses.get(0).getAddressLine(0));
+		} catch (Exception e) {
+			vm.getAddress().setValue("주소 정보 찾는 중");
+		}
+	}
+
+	private String get_position_dms(double latlng) {
+		double val = latlng;
+		int degree = (int) val;
+		int minutes = (int) ((60 * val) - (60 * degree));
+		int seconds = (int) ((3600 * val) - (3600 * degree) - (60 * minutes));
+		return String.format("%3d도 %2d분 %2d초", degree, minutes, seconds);
 	}
 }
