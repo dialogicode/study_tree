@@ -3,6 +3,41 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	package="tree.study">
 
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- normal From 1 -->
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- normal From 1 -->
+	<uses-permission android:name="android.permission.BLUETOOTH" /> <!-- normal From 1 -->
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> <!-- normal From 1 -->
+	<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- normal From 1 -->
+	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" /> <!-- normal From 4 -->
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- normal From 1 -->
+	<uses-permission android:name="android.permission.INTERNET" /> <!-- normal From 1 -->
+	<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- dangerous From 29 -->
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- dangerous From 1 -->
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- dangerous From 1 -->
+	<uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" /> <!-- dangerous From 31 -->
+	<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /> <!-- dangerous From 31 -->
+	<uses-permission android:name="android.permission.BLUETOOTH_SCAN" /> <!-- dangerous From 31 -->
+	<uses-permission android:name="android.permission.CAMERA" /> <!-- dangerous From 1 -->
+	<uses-permission android:name="android.permission.READ_CALENDAR" /> <!-- dangerous From 1 -->
+	<uses-permission android:name="android.permission.READ_CALL_LOG" /> <!-- dangerous From 16 -->
+	<uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- dangerous From 1 -->
+	<uses-permission
+		android:name="android.permission.READ_EXTERNAL_STORAGE"
+		android:maxSdkVersion="28" /> <!-- dangerous From 16 -->
+	<uses-permission android:name="android.permission.READ_SMS" /> <!-- dangerous From 1 -->
+	<uses-permission android:name="android.permission.RECEIVE_SMS" /> <!-- dangerous From 1 -->
+	<uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- dangerous From 1 -->
+	<uses-permission android:name="android.permission.SEND_SMS" /> <!-- dangerous From 1 -->
+	<uses-permission android:name="android.permission.WRITE_CALENDAR" /> <!-- dangerous From 1 -->
+	<uses-permission android:name="android.permission.WRITE_CALL_LOG" /> <!-- dangerous From 16 -->
+	<uses-permission android:name="android.permission.WRITE_CONTACTS" /> <!-- dangerous From 1 -->
+	<uses-permission
+		android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+		android:maxSdkVersion="28" /> <!-- dangerous From 4 -->
+	<uses-feature
+		android:name="android.hardware.camera"
+		android:required="true" />
+
 	<application
 		android:allowBackup="true"
 		android:dataExtractionRules="@xml/data_extraction_rules"
