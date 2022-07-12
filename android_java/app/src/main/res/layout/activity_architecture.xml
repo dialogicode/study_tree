@@ -7,13 +7,38 @@
 	tools:context=".branch_act.ArchitectureActivity">
 
 	<TextView
+		android:id="@+id/show"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Architecture"
-		android:textSize="48sp"
+		android:textSize="64sp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
+		app:layout_constraintTop_toTopOf="parent"
+		tools:text="show num" />
+
+	<Button
+		android:id="@+id/minus"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="minus"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.3"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_bias="0.8" />
+
+	<Button
+		android:id="@+id/plus"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="plus"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.7"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_bias="0.8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
