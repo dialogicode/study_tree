@@ -20,18 +20,18 @@ public class ArchitectureActivity extends BaseActivity {
 		bind = ActivityArchitectureBinding.inflate(getLayoutInflater());
 		setContentView(bind.getRoot());
 
-		bind.show.setText(vm.count + "");
+		bind.show.setText(vm.count.getValue() + "");
 		bind.plus.setOnClickListener(this::click_plus);
 		bind.minus.setOnClickListener(this::click_minus);
 	}
 
 	private void click_plus(View view) {
-		vm.count++;
-		bind.show.setText(vm.count + "");
+		vm.increase();
+		bind.show.setText(vm.count.getValue() + "");
 	}
 
 	private void click_minus(View view) {
-		vm.count--;
-		bind.show.setText(vm.count + "");
+		vm.decrease();
+		bind.show.setText(vm.count.getValue() + "");
 	}
 }
