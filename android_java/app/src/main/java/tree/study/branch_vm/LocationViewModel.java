@@ -1,5 +1,7 @@
 package tree.study.branch_vm;
 
+import android.location.Location;
+
 import androidx.lifecycle.MutableLiveData;
 
 import tree.study.base.BaseViewModel;
@@ -79,5 +81,13 @@ public class LocationViewModel extends BaseViewModel {
 			sensor = new MutableLiveData<>();
 		}
 		return sensor;
+	}
+
+	public void setLocation(Location location) {
+		getLatitude().setValue(location.getLatitude());
+		getLongitude().setValue(location.getLongitude());
+		getAltitude().setValue(location.getAltitude());
+		getAccuracy().setValue(location.getAccuracy());
+		getSpeed().setValue(location.getSpeed());
 	}
 }

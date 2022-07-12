@@ -1,8 +1,14 @@
 package tree.study.branch_act;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 import tree.study.base.BaseActivity;
 import tree.study.branch_vm.LocationViewModel;
@@ -11,6 +17,7 @@ import tree.study.databinding.ActivityLocationBinding;
 public class LocationActivity extends BaseActivity {
 	private LocationViewModel vm;
 	private ActivityLocationBinding bind;
+	private FusedLocationProviderClient client;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +35,24 @@ public class LocationActivity extends BaseActivity {
 		vm.getUpdates().observe(this, bool -> bind.updateTv.setText(bool ? "ON" : "OFF"));
 		vm.getSensor().observe(this, bool -> bind.sensorTv.setText(bool ? "GPS Sensor" : "Cell Tower + WIFI"));
 
-		bind.updatesSw.setOnCheckedChangeListener((view, bool) -> vm.getUpdates().setValue(bool));
+		bind.updatesSw.setOnCheckedChangeListener((view, bool) -> {
+			vm.getUpdates().setValue(bool);
+			get_last_location();
+		});
 		bind.sensorSw.setOnCheckedChangeListener((view, bool) -> vm.getSensor().setValue(bool));
+
+		if (!check_permission(perm_tool.get_fore_location_permissions()))
+			request_permission(permissions);
+
+		client = LocationServices.getFusedLocationProviderClient(this);
+	}
+
+	private void get_last_location() {
+		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+		    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			request_permission(perm_tool.get_not_granted_permission(perm_tool.get_fore_location_permissions()));
+			return;
+		}
+		client.getLastLocation().addOnSuccessListener(this, location -> vm.setLocation(location));
 	}
 }
