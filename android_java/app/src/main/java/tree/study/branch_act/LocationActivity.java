@@ -2,13 +2,19 @@ package tree.study.branch_act;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 
 import tree.study.base.BaseActivity;
 import tree.study.branch_vm.LocationViewModel;
@@ -18,6 +24,8 @@ public class LocationActivity extends BaseActivity {
 	private LocationViewModel vm;
 	private ActivityLocationBinding bind;
 	private FusedLocationProviderClient client;
+	private LocationRequest request;
+	private LocationCallback callback;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +45,28 @@ public class LocationActivity extends BaseActivity {
 
 		bind.updatesSw.setOnCheckedChangeListener((view, bool) -> {
 			vm.getUpdates().setValue(bool);
-			get_last_location();
+
+			if (bool) start_location_updates();
+			else stop_location_updates();
 		});
-		bind.sensorSw.setOnCheckedChangeListener((view, bool) -> vm.getSensor().setValue(bool));
+		bind.sensorSw.setOnCheckedChangeListener((view, bool) -> {
+			vm.getSensor().setValue(bool);
+
+			if (bool) request.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
+			else request.setPriority(Priority.PRIORITY_LOW_POWER);
+
+			if (Boolean.TRUE.equals(vm.getUpdates().getValue())) {
+				stop_location_updates();
+				start_location_updates();
+			}
+		});
 
 		if (!check_permission(perm_tool.get_fore_location_permissions()))
 			request_permission(permissions);
 
 		client = LocationServices.getFusedLocationProviderClient(this);
+		request = get_location_request();
+		callback = get_location_callback();
 	}
 
 	private void get_last_location() {
@@ -54,5 +76,38 @@ public class LocationActivity extends BaseActivity {
 			return;
 		}
 		client.getLastLocation().addOnSuccessListener(this, location -> vm.setLocation(location));
+	}
+
+	private LocationRequest get_location_request() {
+		long second = 1000L;
+		long interval_millis = 5L * second;
+		long fast_interval_millis = 2L * second;
+		return LocationRequest.create()
+		                      .setInterval(interval_millis)
+		                      .setFastestInterval(fast_interval_millis)
+		                      .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY);
+	}
+
+	private LocationCallback get_location_callback() {
+		return new LocationCallback() {
+			@Override
+			public void onLocationResult(@NonNull LocationResult locationResult) {
+				Location location = locationResult.getLastLocation();
+				if (location != null) vm.setLocation(location);
+			}
+		};
+	}
+
+	private void start_location_updates() {
+		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+		    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			request_permission(perm_tool.get_not_granted_permission(perm_tool.get_fore_location_permissions()));
+			return;
+		}
+		client.requestLocationUpdates(request, callback, null);
+	}
+
+	private void stop_location_updates() {
+		client.removeLocationUpdates(callback);
 	}
 }
