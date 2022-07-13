@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:baselineAligned="false"
+	android:orientation="horizontal"
+	android:paddingStart="3dp"
+	android:paddingEnd="3dp">
+
+	<LinearLayout
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:layout_weight="2"
+		android:orientation="vertical">
+
+		<TextView
+			android:id="@+id/bt_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:maxLines="1"
+			tools:text="디바이스 이름" />
+
+		<TextView
+			android:id="@+id/bt_addr"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:maxLines="1"
+			tools:text="디바이스 주소" />
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		android:orientation="vertical">
+
+		<TextView
+			android:id="@+id/bt_bond"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:maxLines="1"
+			tools:text="디바이스 페어링 상태" />
+
+		<TextView
+			android:id="@+id/bt_conn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:maxLines="1"
+			tools:text="디바이스 연결 상태" />
+
+	</LinearLayout>
+
+</LinearLayout>
